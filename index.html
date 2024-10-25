@@ -82,7 +82,8 @@
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        if (username === "moo2244a" && password === "123456789") {
+        if ((username === "moo2244a" && password === "123456789") ||
+            (username === "tahtawy" && password === "tahtawy6373")) {
             document.getElementById('loginForm').style.display = "none";
             document.getElementById('accountPage').style.display = "block";
             loadProjects();
