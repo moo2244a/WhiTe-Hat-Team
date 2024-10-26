@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('background.jpg'); /* استخدم صورة خلفية تناسب تصميمك */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+#loginContainer, #dashboardContainer {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+}
+
+h1, h2, h3 {
+    color: #FFD700; /* لون ذهبي */
+}
+
+button {
+    background-color: #FFD700; /* لون ذهبي */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #FFC107; /* لون أصفر فاتح عند التحويم */
+}
+
+input[type="text"], input[type="password"], input[type="file"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+}

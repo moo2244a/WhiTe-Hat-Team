@@ -3,164 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhiTe HaT TeaM - تسجيل الدخول</title>
-    <style>
-        /* تنسيق الصفحة الأساسية */
-        body, html {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            background-image: url('background.jpg'); /* ضع هنا رابط صورة الخلفية */
-            background-size: cover;
-            background-repeat: no-repeat;
-            color: #fff;
-        }
-        /* تنسيق نافذة تسجيل الدخول */
-        #loginForm, #accountPage {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            text-align: center;
-        }
-        input, button {
-            margin: 10px 0;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            width: 100%;
-        }
-        button {
-            background: #1d72b8;
-            color: #fff;
-            cursor: pointer;
-        }
-        #projectsList div {
-            background: #333;
-            padding: 10px;
-            margin: 5px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        #projectsList a {
-            color: #1d72b8;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-    </style>
+    <title>WhiTe HaT TeaM</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div id="loginContainer">
+        <h1 style="font-family: 'Arial', sans-serif; font-size: 36px; text-align: center;">WhiTe HaT TeaM</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <input type="password" id="password" placeholder="كلمة المرور" required>
+            <button type="submit">تسجيل الدخول</button>
+            <div id="error" style="color: red;"></div>
+        </form>
+    </div>
 
-<!-- نافذة تسجيل الدخول -->
-<div id="loginForm">
-    <h2>تسجيل الدخول</h2>
-    <input type="text" id="username" placeholder="اسم المستخدم">
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="login()">دخول</button>
-</div>
+    <div id="dashboardContainer" style="display:none;">
+        <h2>مرحبا بك، <span id="currentUser"></span></h2>
+        <h3>المشاريع الخاصة بك:</h3>
+        <div id="projectList"></div>
+        <input type="file" id="fileUpload">
+        <button onclick="uploadFile()">رفع مشروع</button>
+        <button onclick="logout()">تسجيل الخروج</button>
 
-<!-- صفحة الحساب الشخصي -->
-<div id="accountPage" style="display: none;">
-    <h2>حسابي</h2>
-    <button onclick="logout()">تسجيل الخروج</button>
-    <h3>مشاريعي</h3>
-    <div id="projectsList"></div>
-    <input type="file" id="fileInput">
-    <button onclick="uploadProject()">رفع ملف</button>
-</div>
+        <h3>إرسال رسالة نصية:</h3>
+        <input type="text" id="recipient" placeholder="اسم المستخدم المستلم" required>
+        <input type="text" id="messageContent" placeholder="اكتب رسالتك هنا" required>
+        <input type="file" id="messageFile">
+        <button onclick="sendMessage()">إرسال</button>
 
-<script>
-    // التحقق من تسجيل الدخول
-    function login() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        <h3>الرسائل:</h3>
+        <div id="inbox"></div>
+    </div>
 
-        if ((username === "moo2244a" && password === "123456789") ||
-            (username === "tahtawy" && password === "tahtawy6373")) {
-            document.getElementById('loginForm').style.display = "none";
-            document.getElementById('accountPage').style.display = "block";
-            loadProjects();
-        } else {
-            alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
-        }
-    }
-
-    // رفع مشروع جديد
-    function uploadProject() {
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-
-        if (file) {
-            const projects = JSON.parse(localStorage.getItem('projects')) || [];
-            const project = {
-                name: file.name,
-                url: URL.createObjectURL(file)  // إنشاء رابط للملف
-            };
-            projects.push(project);
-            localStorage.setItem('projects', JSON.stringify(projects));
-            loadProjects();
-            fileInput.value = '';
-        } else {
-            alert("اختر ملف للرفع.");
-        }
-    }
-
-    // تحميل المشاريع من التخزين
-    function loadProjects() {
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        const projectsList = document.getElementById('projectsList');
-        projectsList.innerHTML = '';
-
-        projects.forEach((project, index) => {
-            const projectDiv = document.createElement('div');
-
-            // زر الفتح
-            const openBtn = document.createElement('button');
-            openBtn.textContent = "فتح";
-            openBtn.onclick = () => openProject(project.url);
-            projectDiv.appendChild(openBtn);
-
-            // رابط لعرض اسم الملف
-            const projectLink = document.createElement('span');
-            projectLink.textContent = project.name;
-            projectDiv.appendChild(projectLink);
-
-            // زر الحذف
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = "حذف";
-            deleteBtn.onclick = () => deleteProject(index);
-            projectDiv.appendChild(deleteBtn);
-
-            projectsList.appendChild(projectDiv);
-        });
-    }
-
-    // فتح مشروع
-    function openProject(url) {
-        window.open(url, '_blank'); // فتح الملف في تبويب جديد
-    }
-
-    // حذف مشروع
-    function deleteProject(index) {
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        projects.splice(index, 1);
-        localStorage.setItem('projects', JSON.stringify(projects));
-        loadProjects();
-    }
-
-    // تسجيل الخروج
-    function logout() {
-        document.getElementById('loginForm').style.display = "flex";
-        document.getElementById('accountPage').style.display = "none";
-    }
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
